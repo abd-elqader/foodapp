@@ -1,15 +1,82 @@
-import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-import Login from './Authentication/Login/Login.jsx'
+import DashboardLayout from './Modules/Shared/DashboardLayout/DashboardLayout.jsx'
+import AuthLayout from './Modules/Shared/AuthLayout/AuthLayout.jsx'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import Login from './Modules/Authentication/Login/Login.jsx'
+import ForgetPass from './Modules/Authentication/ForgetPass/ForgetPass.jsx'
+import ResetPass from './Modules/Authentication/ResetPass/ResetPass.jsx'
+import ChangePass from './Modules/Authentication/ChangePass/ChangePass.jsx'
+import VerifyAccount from './Modules/Authentication/VerifyAccount/VerifyAccount.jsx'
+import NoFound from './Modules/Shared/NoFound/NoFound.jsx'
+import Dashboard from './Modules/Dashboard/Dashboard.jsx'
+import UsersList from './Modules/Users/UsersList/UsersList.jsx'
+import RecipesList from './Modules/Recipes/RecipesList/RecipesList.jsx'
+import RecipeData from './Modules/Recipes/RecipeData/RecipeData.jsx'
+import CategoriesList from './Modules/Categories/CategoriesList/CategoriesList.jsx'
+import CategoryData from './Modules/Categories/CategoryData/CategoryData.jsx'
+import Register from './Modules/Authentication/Register/Register.jsx'
 
 function App() {
+
+  const routes = createBrowserRouter([
+    {
+      path: "/",
+      element: <AuthLayout />,
+      elementError: <NoFound />,
+      children: [
+        {
+          index: true,
+          element: <Login />
+        }, {
+          path: "register",
+          element: <Register />
+        }, {
+          path: 'forget-password',
+          element: <ForgetPass />
+        }, {
+          path: 'reset-password',
+          element: <ResetPass />
+        }, {
+          path: 'change-password',
+          element: <ChangePass />
+        }, {
+          path: 'verify-account',
+          element: <VerifyAccount />
+        }
+      ]
+    }, {
+      path: "dashboard",
+      element: <DashboardLayout />,
+      elementError: <NoFound />,
+      children: [
+        {
+          index: true,
+          element: <Dashboard />
+        }, {
+          path: "recipes-data",
+          element: <RecipeData />
+        }, {
+          path: "recipes-list",
+          element: <RecipesList />
+        }, {
+          path: "Category-data",
+          element: <CategoryData />
+        }, {
+          path: "Category-list",
+          element: <CategoriesList />
+        }, {
+          path: "users-list",
+          element: <UsersList />
+        }
+      ]
+    }
+  ])
+
   return (
     <>
-      <p className='bg-info'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod provident debitis distinctio, accusamus enim perferendis vitae ut reprehenderit laboriosam ab quos? Doloremque reprehenderit id eligendi perspiciatis officiis ex maiores doloribus?</p>
-      <i className='fa fa-user'></i>
-      <Login />
+      <RouterProvider router={routes}></RouterProvider>
     </>
   )
 }
