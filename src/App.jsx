@@ -1,5 +1,3 @@
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 import DashboardLayout from './Modules/Shared/DashboardLayout/DashboardLayout.jsx'
 import AuthLayout from './Modules/Shared/AuthLayout/AuthLayout.jsx'
@@ -17,12 +15,13 @@ import RecipeData from './Modules/Recipes/RecipeData/RecipeData.jsx'
 import CategoriesList from './Modules/Categories/CategoriesList/CategoriesList.jsx'
 import CategoryData from './Modules/Categories/CategoryData/CategoryData.jsx'
 import Register from './Modules/Authentication/Register/Register.jsx'
+import { ToastContainer } from 'react-toastify'
 
 function App() {
 
   const routes = createBrowserRouter([
     {
-      path: "/",
+      path: "/login",
       element: <AuthLayout />,
       elementError: <NoFound />,
       children: [
@@ -77,6 +76,7 @@ function App() {
   return (
     <>
       <RouterProvider router={routes}></RouterProvider>
+      <ToastContainer />
     </>
   )
 }
