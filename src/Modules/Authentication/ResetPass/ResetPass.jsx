@@ -12,7 +12,7 @@ export default function ResetPass() {
         try {
             let response = await axios.post('https://upskilling-egypt.com:3006/api/v1/Users/Reset', data)
             toast.success(response.data.message);
-            navigate('/login');
+            navigate('/');
         } catch (error) {
             console.log(error);
 

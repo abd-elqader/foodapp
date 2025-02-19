@@ -36,7 +36,7 @@ export default function ForgetPass() {
                                     <span className="input-group-text" id="basic-addon1"><i className="fa-solid fa-mobile-screen-button"></i></span>
                                     <input {...register("email", { required: 'field is required' })} type="text" className="form-control" placeholder="Enter your email" />
                                 </div>
-                                {errors.email && <span className="text-danger">{errors.email.message}</span>}
+                                {errors.email && <span className="text-danger mt-2">{errors.email.message}</span>}
                                 <button type="submit" className="btn w-100 btn-success mt-3">Submit</button>
                             </form>
                         </div>
