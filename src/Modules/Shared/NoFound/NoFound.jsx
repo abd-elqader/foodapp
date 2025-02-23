@@ -1,5 +1,7 @@
 export default function NoFound() {
     return (
-        <div>NoFound</div>
+        <tr>
+            <td colSpan="100%">No data found</td>
+        </tr>
     )
 }
