@@ -11,7 +11,6 @@ export default function RecipesList() {
             let response = await axios_instance_auth.get(
                 RECIPES_URLS.GET_RECIPES
             )
-            console.log(response)
             setRecipes(response.data.data)
 
         } catch (e) {
@@ -36,8 +35,7 @@ export default function RecipesList() {
     }
 
     useEffect(() => {
-        getRecipes()
-        console.log(recipes)
+        getRecipes().then(r => console.log(r));
     }, [])
 
 

@@ -24,14 +24,27 @@ function App() {
 
   const [loginData, setLoginData] = useState(null)
 
-    let saveLoginData = () => {
-        let encodeData = localStorage.getItem('token')
-        let decodeData = jwtDecode(encodeData);
-        setLoginData(decodeData)
-
+    // let saveLoginData = () => {
+    //     let encodeData = localStorage.getItem('token')
+    //     let decodeData = jwtDecode(encodeData);
+    //     setLoginData(decodeData)
+    //
+    // }
+  let saveLoginData = () => {
+    let token = localStorage.getItem('token');
+    if (token) {
+      try {
+        let decodeData = jwtDecode(token);
+        setLoginData(decodeData);
+      } catch (error) {
+        console.error("Invalid token", error);
+        localStorage.removeItem('token'); // Clear if it's an invalid token
+      }
     }
+  }
 
-    useEffect(() => {
+
+  useEffect(() => {
         if (localStorage.getItem('token')) {
           saveLoginData(localStorage.getItem('token'))
         }

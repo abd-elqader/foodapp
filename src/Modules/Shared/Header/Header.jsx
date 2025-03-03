@@ -3,7 +3,7 @@
 export default function Header({title, description, image}) {
     return (
         <>
-                <div className="container-fluid bg-success rounded-2 ">
+                <div className="container-fluid bg-success rounded-2 text-white">
                     <div className="row justify-content-between custom-min-height align-items-center">
                         <div className="col-9">
                             <div className="caption">

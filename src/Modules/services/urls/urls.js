@@ -36,3 +36,11 @@ export const CATEGORIES_URLS = {
     UPDATE_CATEGORY: (id)=> `/Category/${id}`,
     DELETE_CATEGORY: (id)=> `/Category/${id}`,
 }
+
+export const USERS_URLS = {
+    GET_USERS: `Users`,
+    CREATE_USER: `User`,
+    GET_USER: (id)=> `/User/${id}`,
+    UPDATE_USER: (id)=> `/User/${id}`,
+    DELETE_USER: (id)=> `/User/${id}`,
+}
