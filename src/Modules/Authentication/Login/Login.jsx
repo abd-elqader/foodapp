@@ -1,15 +1,15 @@
-import {Link, useNavigate} from "react-router-dom";
-import {useForm} from "react-hook-form";
-import {toast} from "react-toastify";
-import {useState} from "react";
-import {EMAIL_VALIDATION, PASSWORD_VALIDATION} from "../../services/Validation/validation.js";
-import {axios_instance, USER_URLS} from "../../services/urls/urls.js";
+import { Link, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import { useState } from "react";
+import { EMAIL_VALIDATION, PASSWORD_VALIDATION } from "../../services/Validation/validation.js";
+import { axios_instance, USER_URLS } from "../../services/urls/urls.js";
 
-export default function Login({saveLoginData}) {
+export default function Login({ saveLoginData }) {
     let {
         register,
-        formState: {errors},
-        handleSubmit} = useForm();
+        formState: { errors },
+        handleSubmit } = useForm();
 
     const [showPassword, setShowPassword] = useState(false);
     let navigate = useNavigate();
@@ -40,16 +40,16 @@ export default function Login({saveLoginData}) {
                     <span className="input-group-text" id="basic-addon1"><i
                         className="fa-solid fa-mobile-screen-button"></i></span>
                     <input {...register("email", EMAIL_VALIDATION)} autoComplete="current-password" type="text" className="form-control"
-                           placeholder="Enter your E-mail" aria-label="Username" aria-describedby="basic-addon1"/>
+                        placeholder="Enter your E-mail" aria-label="Username" aria-describedby="basic-addon1" />
                 </div>
                 {errors.email && <span className="text-danger">{errors.email.message}</span>}
                 <div className="input-group mt-3 mb-2">
                     <span className="input-group-text"><i className="fa-solid fa-lock"></i></span>
                     <input {...register("password", PASSWORD_VALIDATION)} type={showPassword ? "text" : "password"}
-                           className="form-control" placeholder="Password"/>
-                    <span className="input-group-text" style={{cursor: 'pointer'}}
-                          onClick={() => setShowPassword(!showPassword)}>
-                          <i className={`fa ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`}></i>
+                        className="form-control" placeholder="Password" />
+                    <span className="input-group-text" style={{ cursor: 'pointer' }}
+                        onClick={() => setShowPassword(!showPassword)}>
+                        <i className={`fa ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`}></i>
                     </span>
                 </div>
                 {errors.password && <span className="text-danger">{errors.password.message}</span>}

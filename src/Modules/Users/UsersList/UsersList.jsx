@@ -1,18 +1,12 @@
 import Header from "../../Shared/Header/Header.jsx";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import user_image from "../../../assets/category_header.png";
-import {axios_instance_auth, USERS_URLS} from "../../services/urls/urls.js";
+import { axios_instance_auth, USERS_URLS } from "../../services/urls/urls.js";
 
 import NoFound from "../../Shared/NoFound/NoFound.jsx";
 
 export default function UsersList() {
     const [users, setUsers] = useState([]);
-
-    const [expend, setExpend] = useState(false);
-
-    let toggleExpend = () => {
-        setExpend(!expend)
-    }
 
     let getUsers = async () => {
         try {
@@ -43,7 +37,7 @@ export default function UsersList() {
     // }
 
     useEffect(() => {
-         getUsers().then(r => console.log(r))
+        getUsers().then(r => console.log(r))
     }, [])
 
 
@@ -65,53 +59,39 @@ export default function UsersList() {
                 <table className="table m-2">
                     <thead style={{ backgroundColor: '#f0ad4e', color: 'white' }}>
 
-                    <tr >
-                        <th scope="col">#</th>
-                        <th scope="col">name</th>
-                        <th scope="col">creationData</th>
-                        <th scope="col">actions</th>
-                    </tr>
+                        <tr >
+                            <th scope="col">#</th>
+                            <th scope="col">name</th>
+                            <th scope="col">creationData</th>
+                            <th scope="col">actions</th>
+                        </tr>
                     </thead>
                     <tbody>
-                    {
-                        users.length ? users.map((category) =>
-                            <tr key={category.id}>
-                                <th scope="row">{category.id}</th>
-                                <td>{category.name}</td>
-                                <td>{category.creationDate}</td>
-                                <td>
-                                    {/*<div className="btn-group">*/}
-                                    {/*    <button type="button" className="btn btn-danger dropdown-toggle"*/}
-                                    {/*            data-toggle="dropdown" aria-haspopup="true" aria-expanded={expend}*/}
-                                    {/*            onClick={() => toggleExpend()}>*/}
-                                    {/*        Action*/}
-                                    {/*    </button>*/}
-                                    {/*    <div className="dropdown-menu">*/}
-                                    {/*        <a className="dropdown-item" href="#">Action</a>*/}
-                                    {/*        <a className="dropdown-item" href="#">Another action</a>*/}
-                                    {/*        <a className="dropdown-item" href="#">Something else here</a>*/}
-                                    {/*        <div className="dropdown-divider"></div>*/}
-                                    {/*        <a className="dropdown-item" href="#">Separated link</a>*/}
-                                    {/*    </div>*/}
-                                    {/*</div>*/}
-                                    <div className="btn-group">
-                                        <a className="dropdown-toggle"
-                                                data-bs-toggle="dropdown" aria-expanded={expend}>
-                                            <i className="fa-solid fa-ellipsis"></i>
-                                        </a>
-                                        <ul className="dropdown-menu rounded-2 px-2 ">
-                                            <li className="d-flex align-items-center justify-content-center"><i className="fa-solid fa-eye text-success"></i><a className="dropdown-item" href="#">view</a></li>
-                                            <li className="d-flex align-items-center justify-content-center"><i className="fa-solid fa-trash text-success"></i><a className="dropdown-item" href="#">edit</a></li>
-                                        </ul>
-                                    </div>
-                                    {/*<i className="fa fa-edit text-warning mx-2" aria-hidden="true"*/}
-                                    {/*></i>*/}
-                                    {/*<i className="fa fa-trash text-danger" aria-hidden="true"*/}
-                                    {/*   onClick={() => deleteCategory(category.id)}></i>*/}
-                                </td>
-                            </tr>
-                        ) : <NoFound/>
-                    }
+                        {
+                            users.length ? users.map((category) =>
+                                <tr key={category.id}>
+                                    <th scope="row">{category.id}</th>
+                                    <td>{category.name}</td>
+                                    <td>{category.creationDate}</td>
+                                    <td>
+                                        <div className="btn-group">
+                                            <a className="dropdown-toggle"
+                                                data-bs-toggle="dropdown" aria-expanded='false'>
+                                                <i className="fa-solid fa-ellipsis"></i>
+                                            </a>
+                                            <ul className="dropdown-menu rounded-2 px-2 ">
+                                                <li className="d-flex align-items-center justify-content-center"><i className="fa-solid fa-eye text-success"></i><a className="dropdown-item" href="#">view</a></li>
+                                                <li className="d-flex align-items-center justify-content-center"><i className="fa-solid fa-trash text-success"></i><a className="dropdown-item" href="#">edit</a></li>
+                                            </ul>
+                                        </div>
+                                        {/*<i className="fa fa-edit text-warning mx-2" aria-hidden="true"*/}
+                                        {/*></i>*/}
+                                        {/*<i className="fa fa-trash text-danger" aria-hidden="true"*/}
+                                        {/*   onClick={() => deleteCategory(category.id)}></i>*/}
+                                    </td>
+                                </tr>
+                            ) : <NoFound />
+                        }
                     </tbody>
                 </table>
             </div>

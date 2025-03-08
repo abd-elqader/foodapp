@@ -7,7 +7,7 @@
 .bg-overlay {
     background: linear-gradient(
         to right,
-        rgba(47, 140, 96, .5),
+        rgba(47, 140, 96, 0.5),
         rgba(0, 0, 0, 0.5)
     );
 }
@@ -23,13 +23,13 @@
 
 .sidebar-container .ps-sidebar-container {
     height: 100vh;
-    background: #1F263E;
+    background: #1f263e;
     color: #ffffff;
     border-top-right-radius: 50px;
 }
 
 .sidebar-container .ps-menu-button {
-    transition: all .3s;
+    transition: all 0.3s;
 }
 
 .sidebar-container .ps-menu-button:hover {
@@ -44,4 +44,15 @@
 
 .custom-min-height {
     min-height: 200px; /* Set your desired minimum height */
+}
+
+.btn-group .dropdown-toggle::after {
+    content: none;
+}
+.btn-group .dropdown-toggle {
+    cursor: pointer;
+}
+.table thead {
+    border-radius: 10px;
+    --bs-table-bg: #f0ad4e;
 }

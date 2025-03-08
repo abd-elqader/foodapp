@@ -16,20 +16,13 @@ import CategoriesList from './Modules/Categories/CategoriesList/CategoriesList.j
 import CategoryData from './Modules/Categories/CategoryData/CategoryData.jsx'
 import Register from './Modules/Authentication/Register/Register.jsx'
 import { ToastContainer } from 'react-toastify'
-import {jwtDecode} from "jwt-decode";
-import {useEffect, useState} from "react";
+import { jwtDecode } from "jwt-decode";
+import { useEffect, useState } from "react";
 import ProtectedRoute from "./Modules/Shared/ProtectedRoute/ProtectedRoute.jsx";
 
 function App() {
 
   const [loginData, setLoginData] = useState(null)
-
-    // let saveLoginData = () => {
-    //     let encodeData = localStorage.getItem('token')
-    //     let decodeData = jwtDecode(encodeData);
-    //     setLoginData(decodeData)
-    //
-    // }
   let saveLoginData = () => {
     let token = localStorage.getItem('token');
     if (token) {
@@ -42,13 +35,10 @@ function App() {
       }
     }
   }
-
-
+  
   useEffect(() => {
-        if (localStorage.getItem('token')) {
-          saveLoginData(localStorage.getItem('token'))
-        }
-    },[])
+    saveLoginData()
+  }, [])
 
   const routes = createBrowserRouter([
     {
@@ -58,10 +48,10 @@ function App() {
       children: [
         {
           index: true,
-          element: <Login saveLoginData={saveLoginData}/>
-        },{
+          element: <Login saveLoginData={saveLoginData} />
+        }, {
           path: 'login',
-          element: <Login saveLoginData={saveLoginData}/>
+          element: <Login saveLoginData={saveLoginData} />
         }, {
           path: "register",
           element: <Register />
@@ -81,12 +71,12 @@ function App() {
       ]
     }, {
       path: "dashboard",
-      element: <ProtectedRoute ><DashboardLayout loginData={loginData}/></ProtectedRoute>,
+      element: <ProtectedRoute ><DashboardLayout loginData={loginData} saveLoginData={saveLoginData} /></ProtectedRoute>,
       elementError: <NoFound />,
       children: [
         {
           index: true,
-          element: <Dashboard  />
+          element: <Dashboard />
         }, {
           path: "recipes-data",
           element: <RecipeData />
