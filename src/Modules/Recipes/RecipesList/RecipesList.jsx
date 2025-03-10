@@ -1,11 +1,22 @@
 import image from '../../../assets/recipe_header.png';
 import Header from "../../Shared/Header/Header.jsx";
 import NoFound from "../../Shared/NoFound/NoFound.jsx";
-import {useEffect, useState} from "react";
-import {axios_instance_auth, RECIPES_URLS} from "../../services/urls/urls.js";
+import { useEffect, useState } from "react";
+import { axios_instance_auth, RECIPES_URLS } from "../../services/urls/urls.js";
+import DeleteConfirmation from '../../Shared/DeleteConfirmation/DeleteConfirmation.jsx';
 
 export default function RecipesList() {
     const [recipes, setRecipes] = useState([]);
+
+    const [show, setShow] = useState(false);
+    let [selectedId, setSelected] = useState(null)
+
+    const handleClose = () => setShow(false);
+    const handleShow = (id) => {
+        setShow(true);
+        setSelected(id)
+    }
+
     let getRecipes = async () => {
         try {
             let response = await axios_instance_auth.get(
@@ -28,7 +39,8 @@ export default function RecipesList() {
             await axios_instance_auth.delete(
                 RECIPES_URLS.DELETE_RECIPE(id),
             )
-            await getRecipes();
+            handleClose()
+            getRecipes();
         } catch (e) {
             console.log(e)
         }
@@ -37,7 +49,6 @@ export default function RecipesList() {
     useEffect(() => {
         getRecipes().then(r => console.log(r));
     }, [])
-
 
     return (
         <>
@@ -56,31 +67,32 @@ export default function RecipesList() {
             <div className='p-3'>
                 <table className="table m-2">
                     <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Item Name</th>
-                        <th scope="col">Image</th>
-                        <th scope="col">Price</th>
-                    </tr>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Item Name</th>
+                            <th scope="col">Image</th>
+                            <th scope="col">Price</th>
+                        </tr>
                     </thead>
                     <tbody>
-                    {
-                        recipes.length ? recipes.map((recipe) =>
-                            <tr key={recipe.id}>
-                                <th scope="row">{recipe.id}</th>
-                                <td>{recipe.name}</td>
-                                <td>{recipe.creationDate}</td>
-                                <td>
-                                    <i className="fa fa-edit text-warning mx-2" aria-hidden="true"
-                                    ></i>
-                                    <i className="fa fa-trash text-danger" aria-hidden="true"
-                                       onClick={() => deleteRecipe(recipe.id)}></i>
-                                </td>
-                            </tr>
-                        ) : <NoFound/>
-                    }
+                        {
+                            recipes.length ? recipes.map((recipe) =>
+                                <tr key={recipe.id}>
+                                    <th scope="row">{recipe.id}</th>
+                                    <td>{recipe.name}</td>
+                                    <td>{recipe.creationDate}</td>
+                                    <td>
+                                        <i className="fa fa-edit text-warning mx-2" aria-hidden="true"
+                                        ></i>
+                                        <i className="fa fa-trash text-danger" aria-hidden="true"
+                                            onClick={() => handleShow(recipe?.id)}></i>
+                                    </td>
+                                </tr>
+                            ) : <NoFound />
+                        }
                     </tbody>
                 </table>
+                <DeleteConfirmation show={show} handleClose={handleClose} deleteFunc={() => deleteRecipe(selectedId)} deleteItem={"Reciepe"} />
             </div>
         </>
     )

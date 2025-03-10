@@ -1,7 +1,11 @@
 export default function NoFound() {
     return (
-        <tr>
-            <td colSpan="100%">No data found</td>
-        </tr>
+        <div>
+            <div className="text-center">
+                <img className="w-25" src="" alt="no data" />
+                <h4>No Data</h4>
+                <p>No data available</p>
+            </div>
+        </div>
     )
 }
