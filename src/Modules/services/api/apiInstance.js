@@ -1,13 +1,14 @@
 import axios from "axios";
+import { BASE_URL } from "./apiConfig.js";
 
+// public instance
 const apiInstace = axios.create({
-    baseURL: "https://upskilling-egypt.com:3006/api/v1/",
+    baseURL: BASE_URL,
+});
+
+const privteApiInstace = axios.create({
+    baseURL: BASE_URL,
     headers: { Authorization: localStorage.getItem("token") },
 });
 
-const pricateApiInstace = axios.create({
-    baseURL: "https://upskilling-egypt.com:3006/api/v1/",
-    headers: { Authorization: localStorage.getItem("token") },
-});
-
-export { apiInstace, pricateApiInstace };
+export { apiInstace, privteApiInstace };

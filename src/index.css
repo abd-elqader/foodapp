@@ -52,7 +52,8 @@
 .btn-group .dropdown-toggle {
     cursor: pointer;
 }
-.table thead {
-    border-radius: 10px;
-    --bs-table-bg: #f0ad4e;
+
+.table-container thead {
+    --bs-table-bg: rgba(226, 229, 235, 1);
+    /* --bs-table-b */
 }

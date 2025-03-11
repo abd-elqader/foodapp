@@ -55,21 +55,20 @@ export default function UsersList() {
                 </div>
                 <button className="btn btn-success">Add New Category</button>
             </div>
-            <div className='p-3'>
-                <table className="table m-2">
-                    <thead style={{ backgroundColor: '#f0ad4e', color: 'white' }}>
-
-                        <tr >
+            <div className='table-container'>
+                <table className="table">
+                    <thead>
+                        <tr>
                             <th scope="col">#</th>
-                            <th scope="col">name</th>
-                            <th scope="col">creationData</th>
-                            <th scope="col">actions</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Creation Date</th>
+                            <th scope="col">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {
                             users.length ? users.map((category) =>
-                                <tr key={category.id}>
+                                <tr key={category.id} className="body-row">
                                     <th scope="row">{category.id}</th>
                                     <td>{category.name}</td>
                                     <td>{category.creationDate}</td>
@@ -77,7 +76,7 @@ export default function UsersList() {
                                         <div className="btn-group">
                                             <a className="dropdown-toggle"
                                                 data-bs-toggle="dropdown" aria-expanded='false'>
-                                                <i className="fa-solid fa-ellipsis"></i>
+                                                <i className="fa-solid fa-ellipsis text-muted"></i>
                                             </a>
                                             <ul className="dropdown-menu rounded-2 px-2 ">
                                                 <li className="d-flex align-items-center justify-content-center"><i className="fa-solid fa-eye text-success"></i><a className="dropdown-item" href="#">view</a></li>

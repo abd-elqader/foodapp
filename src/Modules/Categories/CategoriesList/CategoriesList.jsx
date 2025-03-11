@@ -72,7 +72,7 @@ export default function CategoriesList() {
                 <button className="btn btn-success" onClick={() => { alert("hello") }}>Add New Category</button>
             </div>
 
-            <Modal show={show} onHide={handleClose}>
+            {/* <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Add New Category</Modal.Title>
                 </Modal.Header>
@@ -91,11 +91,8 @@ export default function CategoriesList() {
                     <p>are you sure you want to delete this item</p>
                 </Modal.Body>
                 <Modal.Footer>
-                    {/* <Button variant="denger" onClick={deleteFunc}>
-                        Delete this {deleteItem}
-                    </Button> */}
                 </Modal.Footer>
-            </Modal>
+            </Modal> */}
 
             <div className='p-3'>
                 <table className="table m-2">
