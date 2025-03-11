@@ -2,7 +2,7 @@ export const BASE_URL = "https://upskilling-egypt.com:3006/api/v1/";
 export const IMAGE_URL = "https://upskilling-egypt.com:3006/";
 
 // USER_URLS
-const users_endpoints = {
+export const users_endpoints = {
     LOGIN: `Users/Login`,
     REGISTER: `Users/Register`,
     VERFIY: `Users/Verify`,
@@ -10,11 +10,11 @@ const users_endpoints = {
     RESET: `Users/Reset`,
     GET_USER: (id) => `Users/${id}`,
     DELETE_USER: (id) => `Users/${id}`,
-    CHANGE_PASSWORD: (id) => `Users/ChangePassword`,
+    CHANGE_PASSWORD: `Users/ChangePassword`,
 };
 
 // CATEGORIES_URLS
-const categories_endpoints = {
+export const categories_endpoints = {
     GET_CATEGORIES: `Category`,
     DELETE_CATEGORY: (id) => `Category/${id}`,
     POST_CATEGORY: `Category`,
@@ -22,7 +22,7 @@ const categories_endpoints = {
 };
 
 // RECIPES_URLS
-const recipes_endpoints = {
+export const recipes_endpoints = {
     GET_RECIPES: `Recipe`,
     GET_RECIPE: (id) => `Recipe/${id}`,
     POST_RECIPE: `Recipe`,
@@ -31,7 +31,7 @@ const recipes_endpoints = {
 };
 
 // FAVORITES_URLS
-const favorites_endpoints = {
+export const favorites_endpoints = {
     GET_FAVORITES: `userRecipe/`,
     POST_FAVORITES: `userRecipe/`,
     DELETE_FAVORITES: (id) => `userRecipe/${id}`,

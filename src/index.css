@@ -53,7 +53,7 @@
     cursor: pointer;
 }
 
-.table-container thead {
+.container thead {
     --bs-table-bg: rgba(226, 229, 235, 1);
     /* --bs-table-b */
 }

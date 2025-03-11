@@ -83,10 +83,6 @@ export default function UsersList() {
                                                 <li className="d-flex align-items-center justify-content-center"><i className="fa-solid fa-trash text-success"></i><a className="dropdown-item" href="#">edit</a></li>
                                             </ul>
                                         </div>
-                                        {/*<i className="fa fa-edit text-warning mx-2" aria-hidden="true"*/}
-                                        {/*></i>*/}
-                                        {/*<i className="fa fa-trash text-danger" aria-hidden="true"*/}
-                                        {/*   onClick={() => deleteCategory(category.id)}></i>*/}
                                     </td>
                                 </tr>
                             ) : <NoFound />

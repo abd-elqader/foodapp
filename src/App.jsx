@@ -35,7 +35,7 @@ function App() {
       }
     }
   }
-  
+
   useEffect(() => {
     saveLoginData()
   }, [])
@@ -63,7 +63,7 @@ function App() {
           element: <ResetPass />
         }, {
           path: 'change-password',
-          element: <ChangePass />
+          element: <ProtectedRoute ><ChangePass /></ProtectedRoute>
         }, {
           path: 'verify-account',
           element: <VerifyAccount />

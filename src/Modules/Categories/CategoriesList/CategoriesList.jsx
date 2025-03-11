@@ -3,23 +3,46 @@ import { useEffect, useState } from "react";
 import category_image from "../../../assets/category_header.png";
 import { axios_instance_auth, CATEGORIES_URLS } from "../../services/urls/urls.js";
 import NoFound from "../../Shared/NoFound/NoFound.jsx";
-import { Button, Modal } from "react-bootstrap";
-import DeleteConfirmation from "../../Shared/DeleteConfirmation/DeleteConfirmation.jsx";
+
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import { Modal } from "react-bootstrap";
+import { categories_endpoints } from "../../services/api/apiConfig.js";
+import { privteApiInstace } from "../../services/api/apiInstance.js";
+import DeleteConfirmation from "../../Shared/DeleteConfirmation/DeleteConfirmation.jsx";
 
 export default function CategoriesList() {
     const [categories, setCategories] = useState([]);
-    const [show, setShow] = useState(false);
     let [selectedId, setSelected] = useState(null)
 
+    const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = (id) => {
         setShow(true);
         setSelected(id)
     }
 
+    const [showAdd, setShowAdd] = useState(false);
+    const handleCloseAdd = () => setShowAdd(false);
+    const handleShowAdd = () => setShowAdd(true);
+
 
     let { register, formState: { errors, isSubmitted }, handleSubmit } = useForm();
+
+    let onSubmit = async (data) => {
+        try {
+            let response = await privteApiInstace.post(
+                categories_endpoints.POST_CATEGORY,
+                data
+            )
+            toast.success("category added successfully");
+            getCategories();
+            handleCloseAdd();
+        } catch (e) {
+            toast.error("category not added");
+            console.log(e)
+        }
+    }
 
     let getCategories = async () => {
         try {
@@ -37,14 +60,16 @@ export default function CategoriesList() {
         }
     }
 
-    let deleteCategory = async (id) => {
+    let deleteCategory = async () => {
         try {
             await axios_instance_auth.delete(
-                CATEGORIES_URLS.DELETE_CATEGORY(id),
+                CATEGORIES_URLS.DELETE_CATEGORY(selectedId),
             )
-            handleClose()
-            await getCategories();
+            getCategories();
+            handleClose();
+            toast.success("category deleted successfully");
         } catch (e) {
+            toast.error("category not deleted");
             console.log(e)
         }
     }
@@ -54,7 +79,6 @@ export default function CategoriesList() {
         console.log(categories)
     }, [])
 
-
     return (
         <>
             <Header
@@ -63,69 +87,81 @@ export default function CategoriesList() {
                 image={category_image}
             />
 
-
             <div className="title d-flex justify-content-between align-items-center m-2 p-2">
                 <div className="caption">
                     <h3>Categories Details</h3>
                     <span>you can check details</span>
                 </div>
-                <button className="btn btn-success" onClick={() => { alert("hello") }}>Add New Category</button>
+                <button className="btn btn-success" onClick={handleShowAdd}>Add New Category</button>
             </div>
 
-            {/* <Modal show={show} onHide={handleClose}>
+            <Modal show={showAdd} onHide={handleCloseAdd}>
                 <Modal.Header closeButton>
                     <Modal.Title>Add New Category</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div className="text-center">
-                        <form onSubmit={handleSubmit(onSubmit)}>
-                            <div className="input-group mt-3">
-                                <span className="input-group-text" id="basic-addon1"><i className="fa-solid fa-mobile-screen-button"></i></span>
-                                <input {...register("name", { required: 'field is required' })} type="text" className="form-control" placeholder="Enter category name" />
-                            </div>
-                            {errors.name && <span className="text-danger mt-2">{errors.name.message}</span>}
-                            <button type="submit" disabled={isSubmitting} className="btn w-100 btn-success mt-3">{isSubmitting ? "Submitting ..." : 'Submit'}</button>
-                        </form>
-                    </div>
-                    <h5>Delete this {deleteItem}</h5>
-                    <p>are you sure you want to delete this item</p>
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                        <div className="input-group mt-3">
+                            <input
+                                {...register("name")}
+                                type="text"
+                                className="form-control py-3 my-3"
+                                placeholder="Category Name"
+                            />
+                        </div>
+                        {errors.name && (
+                            <span className="text-danger mt-2">{errors.name.message}</span>
+                        )}
+                        <button type="submit" disabled={isSubmitted} className="btn w-100 btn-success mt-3">{isSubmitted ? "saving ..." : 'Save'}</button>
+                    </form>
                 </Modal.Body>
-                <Modal.Footer>
-                </Modal.Footer>
-            </Modal> */}
+            </Modal>
 
-            <div className='p-3'>
-                <table className="table m-2">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">name</th>
-                            <th scope="col">creationData</th>
-                            <th scope="col">actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {
-                            categories.length ? categories.map((category) =>
-                                <tr key={category.id}>
-                                    <th scope="row">{category.id}</th>
-                                    <td>{category.name}</td>
-                                    <td>{category.creationDate}</td>
-                                    <td>
-                                        <i className="fa fa-edit text-warning mx-2" aria-hidden="true"
-                                        ></i>
-                                        <i className="fa fa-trash text-danger" aria-hidden="true"
-                                            onClick={() => handleShow(category?.id)}></i>
-                                        {/* <i className="fa fa-trash text-danger" aria-hidden="true"
-                                            onClick={() => deleteCategory(category.id)}></i> */}
-                                    </td>
-                                </tr>
-                            ) : <NoFound />
-                        }
-                    </tbody>
-
+            <div className='container'>
+                <div className="table-responsive">
+                    <table className="table table-hover table-striped text-center align-middle">
+                        <thead className="overflow-visible">
+                            <tr>
+                                <th scope="col">name</th>
+                                <th scope="col">creationData</th>
+                                <th scope="col">actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                categories.length ? categories.map((category) =>
+                                    <tr key={category.id}>
+                                        <td>{category.name}</td>
+                                        <td>{category.creationDate}</td>
+                                        <td>
+                                            <div className="btn-group">
+                                                <a className="dropdown-toggle"
+                                                    data-bs-toggle="dropdown" aria-expanded='false'>
+                                                    <i className="fa-solid fa-ellipsis text-muted"></i>
+                                                </a>
+                                                <ul className="dropdown-menu rounded-2 px-2 ">
+                                                    <li className="d-flex align-items-center justify-content-center">
+                                                        <i className="fa-solid fa-eye text-success"></i>
+                                                        <a className="dropdown-item">view</a>
+                                                    </li>
+                                                    <li className="d-flex align-items-center justify-content-center">
+                                                        <i className="fa-solid fa-edit text-success"></i>
+                                                        <a className="dropdown-item" onClick={() => handleShow(category?.id)}>edit</a>
+                                                    </li>
+                                                    <li className="d-flex align-items-center justify-content-center">
+                                                        <i className="fa-solid fa-trash text-success" onClick={() => handleShow(category?.id)}></i>
+                                                        <a className="dropdown-item" onClick={() => handleShow(category?.id)}>delete</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ) : <NoFound />
+                            }
+                        </tbody>
+                    </table>
                     <DeleteConfirmation show={show} handleClose={handleClose} deleteFunc={() => deleteCategory(selectedId)} deleteItem={"category"} />
-                </table>
+                </div>
             </div>
         </>
     )
