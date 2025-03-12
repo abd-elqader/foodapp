@@ -10,6 +10,7 @@ import { Modal } from "react-bootstrap";
 import { categories_endpoints } from "../../services/api/apiConfig.js";
 import { privteApiInstace } from "../../services/api/apiInstance.js";
 import DeleteConfirmation from "../../Shared/DeleteConfirmation/DeleteConfirmation.jsx";
+import globals from "globals";
 
 export default function CategoriesList() {
     const [categories, setCategories] = useState([]);
@@ -27,11 +28,15 @@ export default function CategoriesList() {
     const handleShowAdd = () => setShowAdd(true);
 
 
-    let { register, formState: { errors, isSubmitted }, handleSubmit } = useForm();
+    let {
+        register,
+        formState: { errors, isSubmitted },
+        handleSubmit
+    } = useForm();
 
     let onSubmit = async (data) => {
         try {
-            let response = await privteApiInstace.post(
+            await privteApiInstace.post(
                 categories_endpoints.POST_CATEGORY,
                 data
             )
@@ -62,9 +67,10 @@ export default function CategoriesList() {
 
     let deleteCategory = async () => {
         try {
-            await axios_instance_auth.delete(
+            let respones =await axios_instance_auth.delete(
                 CATEGORIES_URLS.DELETE_CATEGORY(selectedId),
             )
+            console.log(respones);
             getCategories();
             handleClose();
             toast.success("category deleted successfully");

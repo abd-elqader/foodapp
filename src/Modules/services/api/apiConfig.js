@@ -18,7 +18,6 @@ export const categories_endpoints = {
     GET_CATEGORIES: `Category`,
     DELETE_CATEGORY: (id) => `Category/${id}`,
     POST_CATEGORY: `Category`,
-    DELETE_CATEGORY: (id) => `Category/${id}`,
 };
 
 // RECIPES_URLS

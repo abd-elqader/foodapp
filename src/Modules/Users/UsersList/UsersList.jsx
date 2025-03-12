@@ -50,10 +50,10 @@ export default function UsersList() {
             />
             <div className="title d-flex justify-content-between align-items-center m-2 p-2">
                 <div className="caption">
-                    <h3>Categories Details</h3>
+                    <h3>users Details</h3>
                     <span>you can check details</span>
                 </div>
-                <button className="btn btn-success">Add New Category</button>
+                <button className="btn btn-success">Add New User</button>
             </div>
             <div className='table-container'>
                 <table className="table">

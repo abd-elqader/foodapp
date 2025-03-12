@@ -1,8 +1,14 @@
 import Header from "../../Shared/Header/Header.jsx";
 import {useEffect, useState} from "react";
 import category_image from "../../../assets/category_header.png";
-import {axios_instance_auth, RECIPES_URLS,} from "../../services/urls/urls.js";
+import {axios_instance, axios_instance_auth, RECIPES_URLS, USER_URLS,} from "../../services/urls/urls.js";
 import NoFound from "../../Shared/NoFound/NoFound.jsx";
+import {EMAIL_VALIDATION, PASSWORD_VALIDATION} from "../../services/Validation/validation.js";
+import {Link} from "react-router-dom";
+import {useForm} from "react-hook-form";
+import {toast} from "react-toastify";
+import {privteApiInstace} from "../../services/api/apiInstance.js";
+import {categories_endpoints, recipes_endpoints} from "../../services/api/apiConfig.js";
 
 
 export default function RecipeData() {
@@ -23,22 +29,23 @@ export default function RecipeData() {
         }
     }
 
-    let deleteRecipe = async (id) => {
+    let {
+        register,
+        formState: { errors },
+        handleSubmit } = useForm();
+
+    const onSubmit = async (data) => {
         try {
-            await axios_instance_auth.delete(
-                Recipes_URLS.DELETE_RECIPE(id),
+            await privteApiInstace.post(
+                recipes_endpoints.POST_RECIPE,
+                data
             )
-            await getRecipes();
-        } catch (e) {
-            console.log(e)
+
+            toast.success('recipe added');
+        } catch (error) {
+            toast.error(error.response.data.message);
         }
     }
-
-    useEffect(() => {
-        getRecipes()
-        console.log(recipes)
-    }, [])
-
 
     return (
         <>
@@ -54,34 +61,17 @@ export default function RecipeData() {
                 </div>
                 <button className="btn btn-success">Add New Category</button>
             </div>
-            <div className='p-3'>
-                <table className="table m-2">
-                    <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">name</th>
-                        <th scope="col">creationData</th>
-                        <th scope="col">actions</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {
-                        recipes.length ? recipes.map((category) =>
-                            <tr key={category.id}>
-                                <th scope="row">{category.id}</th>
-                                <td>{category.name}</td>
-                                <td>{category.creationDate}</td>
-                                <td>
-                                    <i className="fa fa-edit text-warning mx-2" aria-hidden="true"
-                                    ></i>
-                                    <i className="fa fa-trash text-danger" aria-hidden="true"
-                                       onClick={() => deleteRecipe(category.id)}></i>
-                                </td>
-                            </tr>
-                        ) : <NoFound/>
-                    }
-                    </tbody>
-                </table>
+
+            <div>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <div className="input-group mt-3 mb-2">
+                    <span className="input-group-text" id="basic-addon1"><i
+                        className="fa-solid fa-mobile-screen-button"></i></span>
+                        <input {...register("recipe_name", EMAIL_VALIDATION)} autoComplete="current-password" type="text" className="form-control"
+                               placeholder="Enter your name" aria-label="Username" aria-describedby="basic-addon1" />
+                    </div>
+                    {errors.recipe_name && <span className="text-danger">{errors.recipe_name.message}</span>}
+                </form>
             </div>
         </>
     )

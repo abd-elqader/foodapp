@@ -5,7 +5,11 @@ import noData from '../../../assets/noData.png'
 import { useEffect, useState } from "react";
 import { axios_instance_auth, RECIPES_URLS } from "../../services/urls/urls.js";
 import DeleteConfirmation from '../../Shared/DeleteConfirmation/DeleteConfirmation.jsx';
-import { IMAGE_URL } from '../../services/api/apiConfig.js';
+import {categories_endpoints, IMAGE_URL, recipes_endpoints} from '../../services/api/apiConfig.js';
+import {Modal} from "react-bootstrap";
+import {privteApiInstace} from "../../services/api/apiInstance.js";
+import {useForm} from "react-hook-form";
+import { toast } from "react-toastify";
 
 export default function RecipesList() {
     const [recipes, setRecipes] = useState([]);
@@ -23,17 +27,24 @@ export default function RecipesList() {
         setSelected(id)
     }
 
+    let {
+        register,
+        formState: { errors, isSubmitted },
+        handleSubmit
+    }
+        = useForm();
+
     let onSubmit = async (data) => {
         try {
-            let response = await privteApiInstace.post(
-                categories_endpoints.POST_CATEGORY,
+             await privteApiInstace.post(
+                recipes_endpoints.POST_RECIPE,
                 data
             )
-            toast.success("category added successfully");
-            getCategories();
+            toast.success("recipe added successfully");
+            getRecipes();
             handleCloseAdd();
         } catch (e) {
-            toast.error("category not added");
+            toast.error("recipe not added");
             console.log(e)
         }
     }
@@ -78,35 +89,14 @@ export default function RecipesList() {
                 description="You can now add your items that any user can order it from the Application and you can edit"
                 image={image}
             />
+
             <div className="title d-flex justify-content-between align-items-center m-2 p-2">
                 <div className="caption">
-                    <h3>Recipe Table Details</h3>
-                    <span>You can check all details</span>
+                    <h3>Recipes Details</h3>
+                    <span>you can check details</span>
                 </div>
-                <button className="btn btn-success">Add New Item</button>
+                <button className="btn btn-success" onClick={handleShowAdd}>Add New Recipe</button>
             </div>
-
-            <Modal show={showAdd} onHide={handleCloseAdd}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Add New Recipe</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                        <div className="input-group mt-3">
-                            <input
-                                {...register("name")}
-                                type="text"
-                                className="form-control py-3 my-3"
-                                placeholder="Category Name"
-                            />
-                        </div>
-                        {errors.name && (
-                            <span className="text-danger mt-2">{errors.name.message}</span>
-                        )}
-                        <button type="submit" disabled={isSubmitted} className="btn w-100 btn-success mt-3">{isSubmitted ? "saving ..." : 'Save'}</button>
-                    </form>
-                </Modal.Body>
-            </Modal>
 
             <div className='p-3'>
                 <table className="table m-2">
@@ -115,6 +105,9 @@ export default function RecipesList() {
                             <th scope="col">Item Name</th>
                             <th scope="col">Image</th>
                             <th scope="col">Price</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">tag</th>
+                            <th scope="col">Category</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -145,10 +138,30 @@ export default function RecipesList() {
                                     </td>
 
                                     <td data-label="Action">
-                                        <i className="fa fa-edit text-warning mx-2" aria-hidden="true"
-                                        ></i>
-                                        <i className="fa fa-trash text-danger" aria-hidden="true"
-                                            onClick={() => handleShow(recipe?.id)}></i>
+                                        {/*<i className="fa fa-edit text-warning mx-2" aria-hidden="true"*/}
+                                        {/*></i>*/}
+                                        {/*<i className="fa fa-trash text-danger" aria-hidden="true"*/}
+                                        {/*    onClick={() => handleShow(recipe?.id)}></i>*/}
+                                        <div className="btn-group">
+                                            <a className="dropdown-toggle"
+                                               data-bs-toggle="dropdown" aria-expanded='false'>
+                                                <i className="fa-solid fa-ellipsis text-muted"></i>
+                                            </a>
+                                            <ul className="dropdown-menu rounded-2 px-2 ">
+                                                <li className="d-flex align-items-center justify-content-center">
+                                                    <i className="fa-solid fa-eye text-success"></i>
+                                                    <a className="dropdown-item">view</a>
+                                                </li>
+                                                <li className="d-flex align-items-center justify-content-center">
+                                                    <i className="fa-solid fa-edit text-success"></i>
+                                                    <a className="dropdown-item" onClick={() => handleShow(recipe?.id)}>edit</a>
+                                                </li>
+                                                <li className="d-flex align-items-center justify-content-center">
+                                                    <i className="fa-solid fa-trash text-success" onClick={() => handleShow(recipe?.id)}></i>
+                                                    <a className="dropdown-item" onClick={() => handleShow(recipe?.id)}>delete</a>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </td>
                                 </tr>
                             ) : <NoFound />
