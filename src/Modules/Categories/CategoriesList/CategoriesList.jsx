@@ -3,18 +3,18 @@ import { useEffect, useState } from "react";
 import category_image from "../../../assets/category_header.png";
 import { axios_instance_auth, CATEGORIES_URLS } from "../../services/urls/urls.js";
 import NoFound from "../../Shared/NoFound/NoFound.jsx";
-
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { Modal } from "react-bootstrap";
 import { categories_endpoints } from "../../services/api/apiConfig.js";
 import { privteApiInstace } from "../../services/api/apiInstance.js";
 import DeleteConfirmation from "../../Shared/DeleteConfirmation/DeleteConfirmation.jsx";
-import globals from "globals";
+
 
 export default function CategoriesList() {
     const [categories, setCategories] = useState([]);
     let [selectedId, setSelected] = useState(null)
+    const [arrayOfPages, setArrayOfPages] = useState([])
 
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
@@ -49,10 +49,14 @@ export default function CategoriesList() {
         }
     }
 
-    let getCategories = async () => {
+    let getCategories = async (pageSize,pageNumber) => {
         try {
             let response = await axios_instance_auth.get(
-                CATEGORIES_URLS.GET_CATEGORIES
+                CATEGORIES_URLS.GET_CATEGORIES,{
+                    params: {
+                    pageSize: pageSize, pageNumber: pageNumber,
+                    }
+                }
             )
             setCategories(response.data.data)
         } catch (e) {
@@ -166,6 +170,27 @@ export default function CategoriesList() {
                             }
                         </tbody>
                     </table>
+                    <nav aria-label="Page navigation example">
+                        <ul className="pagination">
+                            <li className="page-item">
+                                <a className="page-link" href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                    <span className="sr-only">Previous</span>
+                                </a>
+                            </li>
+                            {arrayOfPages?.map((page) =>(
+                                <li key={page} className="page-item" onClick={() => getCategories(3,page)}>
+                                    <a className="page-link" href="#">{page}</a>
+                                </li>
+                            ))}
+                            <li className="page-item">
+                                <a className="page-link" href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                    <span className="sr-only">Next</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
                     <DeleteConfirmation show={show} handleClose={handleClose} deleteFunc={() => deleteCategory(selectedId)} deleteItem={"category"} />
                 </div>
             </div>

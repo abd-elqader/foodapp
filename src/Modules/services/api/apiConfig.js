@@ -16,8 +16,8 @@ export const users_endpoints = {
 // CATEGORIES_URLS
 export const categories_endpoints = {
     GET_CATEGORIES: `Category`,
-    DELETE_CATEGORY: (id) => `Category/${id}`,
     POST_CATEGORY: `Category`,
+    DELETE_CATEGORY: (id) => `Category/${id}`,
 };
 
 // RECIPES_URLS
@@ -34,4 +34,11 @@ export const favorites_endpoints = {
     GET_FAVORITES: `userRecipe/`,
     POST_FAVORITES: `userRecipe/`,
     DELETE_FAVORITES: (id) => `userRecipe/${id}`,
+};
+
+// TAGS_URLS
+export const tags_endpoints = {
+    GET_TAGS: `Tag`,
+    POST_TAGS: `Tag`,
+    DELETE_TAGS: (id) => `Tag/${id}`,
 };
