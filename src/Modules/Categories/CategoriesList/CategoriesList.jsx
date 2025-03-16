@@ -9,12 +9,20 @@ import { Modal } from "react-bootstrap";
 import { categories_endpoints } from "../../services/api/apiConfig.js";
 import { privteApiInstace } from "../../services/api/apiInstance.js";
 import DeleteConfirmation from "../../Shared/DeleteConfirmation/DeleteConfirmation.jsx";
+import Loading from "../../Shared/Loading/Loading.jsx";
+import { Pagination } from "../../Shared/Pagination/Pagination.jsx";
+import { format } from "date-fns";
 
 
 export default function CategoriesList() {
     const [categories, setCategories] = useState([]);
     let [selectedId, setSelected] = useState(null)
-    const [arrayOfPages, setArrayOfPages] = useState([])
+    const [isLoading, setIsLoading] = useState(true);
+
+
+    // for pagination
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
 
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
@@ -49,16 +57,18 @@ export default function CategoriesList() {
         }
     }
 
-    let getCategories = async (pageSize,pageNumber) => {
+    let getCategories = async (pageSize, pageNumber) => {
         try {
+            setIsLoading(true);
             let response = await axios_instance_auth.get(
-                CATEGORIES_URLS.GET_CATEGORIES,{
-                    params: {
+                CATEGORIES_URLS.GET_CATEGORIES, {
+                params: {
                     pageSize: pageSize, pageNumber: pageNumber,
-                    }
                 }
+            }
             )
             setCategories(response.data.data)
+            setTotalPages(response?.data?.totalNumberOfPages);
         } catch (e) {
             console.log(e.response.data.message)
             return (
@@ -66,12 +76,14 @@ export default function CategoriesList() {
                     {e.response.data.message}
                 </div>
             )
+        } finally {
+            setIsLoading(false);
         }
     }
 
     let deleteCategory = async () => {
         try {
-            let respones =await axios_instance_auth.delete(
+            let respones = await axios_instance_auth.delete(
                 CATEGORIES_URLS.DELETE_CATEGORY(selectedId),
             )
             console.log(respones);
@@ -85,9 +97,8 @@ export default function CategoriesList() {
     }
 
     useEffect(() => {
-        getCategories()
-        console.log(categories)
-    }, [])
+        getCategories(3, currentPage).then(r => console.log(r));
+    }, [currentPage])
 
     return (
         <>
@@ -127,73 +138,62 @@ export default function CategoriesList() {
                 </Modal.Body>
             </Modal>
 
-            <div className='container'>
-                <div className="table-responsive">
-                    <table className="table table-hover table-striped text-center align-middle">
-                        <thead className="overflow-visible">
-                            <tr>
-                                <th scope="col">name</th>
-                                <th scope="col">creationData</th>
-                                <th scope="col">actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                categories.length ? categories.map((category) =>
-                                    <tr key={category.id}>
-                                        <td>{category.name}</td>
-                                        <td>{category.creationDate}</td>
-                                        <td>
-                                            <div className="btn-group">
-                                                <a className="dropdown-toggle"
-                                                    data-bs-toggle="dropdown" aria-expanded='false'>
-                                                    <i className="fa-solid fa-ellipsis text-muted"></i>
-                                                </a>
-                                                <ul className="dropdown-menu rounded-2 px-2 ">
-                                                    <li className="d-flex align-items-center justify-content-center">
-                                                        <i className="fa-solid fa-eye text-success"></i>
-                                                        <a className="dropdown-item">view</a>
-                                                    </li>
-                                                    <li className="d-flex align-items-center justify-content-center">
-                                                        <i className="fa-solid fa-edit text-success"></i>
-                                                        <a className="dropdown-item" onClick={() => handleShow(category?.id)}>edit</a>
-                                                    </li>
-                                                    <li className="d-flex align-items-center justify-content-center">
-                                                        <i className="fa-solid fa-trash text-success" onClick={() => handleShow(category?.id)}></i>
-                                                        <a className="dropdown-item" onClick={() => handleShow(category?.id)}>delete</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ) : <NoFound />
-                            }
-                        </tbody>
-                    </table>
-                    <nav aria-label="Page navigation example">
-                        <ul className="pagination">
-                            <li className="page-item">
-                                <a className="page-link" href="#" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                    <span className="sr-only">Previous</span>
-                                </a>
-                            </li>
-                            {arrayOfPages?.map((page) =>(
-                                <li key={page} className="page-item" onClick={() => getCategories(3,page)}>
-                                    <a className="page-link" href="#">{page}</a>
-                                </li>
-                            ))}
-                            <li className="page-item">
-                                <a className="page-link" href="#" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                    <span className="sr-only">Next</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
-                    <DeleteConfirmation show={show} handleClose={handleClose} deleteFunc={() => deleteCategory(selectedId)} deleteItem={"category"} />
-                </div>
-            </div>
+            <table className="table m-2">
+                <thead className="overflow-visible">
+                    <tr>
+                        <th scope="col">name</th>
+                        <th scope="col">creationData</th>
+                        <th scope="col">actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+                        isLoading ? (
+                            <Loading colSpan={3} />
+                        ) :
+                            categories.length ? categories.map((category) =>
+                                <tr key={category.id}>
+                                    <td>{category.name}</td>
+                                    <td>{format(new Date(category.creationDate), 'MMMM dd, yyyy hh:mm:ss a')}</td>
+                                    <td>
+                                        <div className="btn-group">
+                                            <a className="dropdown-toggle"
+                                                data-bs-toggle="dropdown" aria-expanded='false'>
+                                                <i className="fa-solid fa-ellipsis text-muted"></i>
+                                            </a>
+                                            <ul className="dropdown-menu rounded-2 px-2 ">
+                                                <li className="d-flex align-items-center justify-content-center">
+                                                    <i className="fa-solid fa-eye text-success"></i>
+                                                    <a className="dropdown-item">view</a>
+                                                </li>
+                                                {/* <li className="d-flex align-items-center justify-content-center">
+                                                    <i className="fa-solid fa-edit text-success"></i>
+                                                    <a className="dropdown-item" onClick={() => handleShow(category?.id)}>edit</a>
+                                                </li> */}
+                                                <li className="d-flex align-items-center justify-content-center">
+                                                    <i className="fa-solid fa-trash text-success" onClick={() => handleShow(category?.id)}></i>
+                                                    <a className="dropdown-item" onClick={() => handleShow(category?.id)}>delete</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ) : <NoFound />
+                    }
+                </tbody>
+            </table>
+
+            {
+                isLoading ? ('') :
+                    (<Pagination
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        onPageChange={(page) => setCurrentPage(page)}
+                        entityType="categories"
+                    />)
+            }
+            <DeleteConfirmation show={show} handleClose={handleClose} deleteFunc={() => deleteCategory(selectedId)} deleteItem={"category"} />
+
         </>
     )
 }

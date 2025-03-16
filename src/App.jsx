@@ -44,7 +44,7 @@ function App() {
     {
       path: "/",
       element: <AuthLayout />,
-      elementError: <NoFound />,
+      errorElement: <NoFound />,
       children: [
         {
           index: true,
@@ -72,7 +72,7 @@ function App() {
     }, {
       path: "dashboard",
       element: <ProtectedRoute ><DashboardLayout loginData={loginData} saveLoginData={saveLoginData} /></ProtectedRoute>,
-      elementError: <NoFound />,
+      errorElement: <NoFound />,
       children: [
         {
           index: true,
@@ -80,10 +80,10 @@ function App() {
         }, {
           path: "recipes-data",
           element: <RecipeData />
-        },{
+        }, {
           path: "recipes-data/:id",
           element: <RecipeData />
-        },{
+        }, {
           path: "recipes-list",
           element: <RecipesList />
         }, {
@@ -97,7 +97,7 @@ function App() {
           element: <UsersList />
         }
       ]
-    }
+    },
   ]);
 
   return (

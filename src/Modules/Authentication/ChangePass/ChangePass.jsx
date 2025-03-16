@@ -53,7 +53,6 @@ export default function ChangePass() {
                 {/* <p className="text-muted">Please Enter Your Otp or Check Your Inbox</p> */}
             </div>
             <form onSubmit={handleSubmit(onSubmit)}>
-                {errors.email && <span className="text-danger">{errors.email.message}</span>}
                 <div className="input-group mt-3">
                     <span className="input-group-text"><i className="fa-solid fa-lock"></i></span>
                     <input {...register("oldPassword", { required: 'field is required' })}

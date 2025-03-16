@@ -12,7 +12,5 @@ export default function NoFound() {
                 </div>
             </td>
         </tr>
-
-
     )
 }

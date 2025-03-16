@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import logo from '../../../assets/sidebar_logo.png';
 import { useState } from "react";
 
-export default function SideBar() {
+export default function SideBar({ handleShow }) {
     let navigate = useNavigate()
 
     const [isCollapsed, setIsCollapsed] = useState(false);
@@ -27,7 +27,11 @@ export default function SideBar() {
                     <MenuItem icon={<i className="fa-solid fa-users" aria-hidden="true"></i>} component={<Link to="/dashboard/users-List" />}> users </MenuItem>
                     <MenuItem icon={<i className="fa-solid fa-kitchen-set" aria-hidden="true"></i>} component={<Link to="/dashboard/recipes-list" />}> recipes </MenuItem>
                     <MenuItem icon={<i className="fa-solid fa-layer-group" aria-hidden="true"></i>} component={<Link to="/dashboard/categories-list" />}> categories </MenuItem>
-                    <MenuItem icon={<i className="fa-solid fa-lock" aria-hidden="true"></i>} component={<Link to="/change-password" />}> change password </MenuItem>
+                    <MenuItem onClick={handleShow}
+                        icon={<i className="fa-solid fa-lock" aria-hidden="true"></i>}
+                    >
+                        change password
+                    </MenuItem>
                     <MenuItem icon={<i className="fa-solid fa-right-from-bracket"></i>} onClick={logout}> Logout </MenuItem>
                 </Menu>
             </Sidebar>;

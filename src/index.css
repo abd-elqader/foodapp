@@ -21,15 +21,24 @@
     border-color: #ffffff;
 }
 
-.sidebar-container .ps-sidebar-container {
-    height: 100vh;
+.sidebar-container {
     background: #1f263e;
-    color: #ffffff;
+    z-index: 100;
+    height: 100%;
     border-top-right-radius: 50px;
 }
 
+.sidebar-container .ps-sidebar-container {
+    background: #1f263e;
+    height: 100vh;
+    border-top-right-radius: 50px;
+    color: #ffffff;
+}
+
 .sidebar-container .ps-menu-button {
+    background: #1f263e;
     transition: all 0.3s;
+    color: #ffffff;
 }
 
 .sidebar-container .ps-menu-button:hover {
@@ -56,4 +65,8 @@
 .container thead {
     --bs-table-bg: rgba(226, 229, 235, 1);
     /* --bs-table-b */
+}
+
+.bg-light-green {
+    background: #f0ffef;
 }
