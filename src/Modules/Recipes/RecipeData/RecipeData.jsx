@@ -11,6 +11,7 @@ export default function RecipeData() {
     const params = useParams()
     const recipeId = params.recipeId;
 
+    console.log(recipeId);
 
     const [categories, setCategories] = useState([])
     const [tags, setTags] = useState([])
@@ -86,18 +87,18 @@ export default function RecipeData() {
             await getCategories();
             await getTags();
 
-            if (recipeId !== "new-recipe") {
+            if (!(recipeId == undefined)) {
                 const getRecipe = async () => {
                     const response = await privteApiInstace.get(recipes_endpoints.GET_RECIPE(recipeId))
                     const recipe = response?.data;
+                    console.log(recipe);
 
                     setValue("name", recipe?.name);
                     setValue("description", recipe?.description);
                     setValue("price", recipe?.price);
-                    setValue("tagId", recipe?.tagId);
-                    setValue("categoryId", recipe?.categoryId[0].id);
+                    setValue("tagId", recipe?.tag?.Id);
+                    setValue("categoriesIds", recipe?.category[0].id);
                     setValue("recipeImage", recipe?.recipeImage);
-
                 }
                 await getRecipe();
             }
@@ -165,7 +166,7 @@ export default function RecipeData() {
                                     name="categoryId"
                                     id="category"
                                     className="form-select"
-                                    {...register("categoryId")}
+                                    {...register("categoriesIds")}
                                 >
                                     {categories?.map(({ id, name }) => (
                                         <option key={id} value={id}>{name}</option>
@@ -201,8 +202,8 @@ export default function RecipeData() {
                         </form>
                     </div>
 
-                </main>
-            </div>
+                </main >
+            </div >
         </>
     )
 }

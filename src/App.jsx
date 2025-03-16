@@ -81,7 +81,7 @@ function App() {
           path: "recipes-data",
           element: <RecipeData />
         }, {
-          path: "recipes-data/:id",
+          path: "recipes-data/:recipeId",
           element: <RecipeData />
         }, {
           path: "recipes-list",
