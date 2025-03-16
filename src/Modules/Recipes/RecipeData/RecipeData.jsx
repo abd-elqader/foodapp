@@ -53,21 +53,23 @@ export default function RecipeData() {
     let onSubmit = async (data) => {
         try {
             const formData = new FormData();
-            // formData.append("name", data.name);
-            // formData.append("description", data.description);
-            // formData.append("price", data.price);
-            // formData.append("tagId", data.tagId);
-            // formData.append("categoryId", data.categoryId);
-            // formData.append("recipeImage", data.recipeImage);
+            formData.append("name", data.name);
+            formData.append("description", data.description);
+            formData.append("price", data.price);
+            formData.append("tagId", data.tagId);
+            formData.append("categoriesIds", data.categoryId);
+            formData.append("recipeImage", data.recipeImage);
 
-            for (let key in data) {
-                if (key === "recipeImage") {
-                    formData.append(key, data[key][0]);
-                }
-                else {
-                    formData.append(key, data[key]);
-                }
-            }
+            // for (let key in data) {
+            //     if (key === "recipeImage") {
+            //         formData.append(key, data[key][0]);
+            //     }
+            //     else {
+            //         formData.append(key, data[key]);
+            //     }
+            // }
+
+            console.log(formData)
             await privteApiInstace.post(
                 recipes_endpoints.POST_RECIPE,
                 formData

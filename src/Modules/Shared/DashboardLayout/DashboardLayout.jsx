@@ -33,7 +33,7 @@ export default function DashboardLayout({ loginData }) {
     } = useForm();
 
     const newPassword = watch("newPassword");
-    const confirmNewPassword = watch("confirmPassword")
+    const confirmNewPassword = watch("confirmNewPassword")
 
     let onSubmit = async (data) => {
         try {
